@@ -1,8 +1,8 @@
 package com.texoit.movies.controller;
 
 import com.texoit.movies.entities.MinMaxComparison;
+import com.texoit.movies.entities.SimpleKeyValue;
 import com.texoit.movies.services.MovieService;
-import javafx.util.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,19 +20,19 @@ public class MovieController {
 
     @RequestMapping("/")
     public List getIndex() {
-        List<Pair<String, String>> pairs = new ArrayList<>();
-        pairs.add(new Pair<>("/Awards-Best-and-Worst", "REQ: Obter o produtor com maior intervalo entre dois prêmios consecutivos, e o que obteve dois prêmios mais rápido."));
-        pairs.add(new Pair<>("/data-errors", "LISTA DE ERROS DE INTERPRETAÇÃO DE DADOS CSV (DB)"));
-        pairs.add(new Pair<>("/movies", "LISTA ENTIDADES MOVIE"));
-        pairs.add(new Pair<>("/movies/count", "TOTAL ENTIDADES MOVIE"));
-        pairs.add(new Pair<>("/movies/year-{year}", "PESQUISA PROP YEAR ENTIDADES MOVIE"));
-        pairs.add(new Pair<>("/movies/winners", "LISTA ENTIDADES MOVIE QUANDO PROP WINNER = TRUE"));
-        pairs.add(new Pair<>("/movies/winners/count", "TOTAL ENTIDADES MOVIE WINNER = TRUE"));
-        pairs.add(new Pair<>("/movies/winners/year-{year}", "PESQUISA PROP YEAR ENTIDADES MOVIE WINNER = TRUE"));
-        pairs.add(new Pair<>("/studios", "LISTA ENTIDADES STUDIO"));
-        pairs.add(new Pair<>("/studios/count", "TOTAL ENTIDADES STUDIO"));
-        pairs.add(new Pair<>("/producers", "LISTA ENTIDADES PRODUCERS"));
-        pairs.add(new Pair<>("/producers/count", "TOTAL ENTIDADES PRODUCERS"));
+        List<SimpleKeyValue> pairs = new ArrayList<>();
+        pairs.add(new SimpleKeyValue("/Awards-Best-and-Worst", "REQ: Obter o produtor com maior intervalo entre dois prêmios consecutivos, e o que obteve dois prêmios mais rápido."));
+        pairs.add(new SimpleKeyValue("/data-errors", "LISTA DE ERROS DE INTERPRETAÇÃO DE DADOS CSV (DB)"));
+        pairs.add(new SimpleKeyValue("/movies", "LISTA ENTIDADES MOVIE"));
+        pairs.add(new SimpleKeyValue("/movies/count", "TOTAL ENTIDADES MOVIE"));
+        pairs.add(new SimpleKeyValue("/movies/year-{year}", "PESQUISA PROP YEAR ENTIDADES MOVIE"));
+        pairs.add(new SimpleKeyValue("/movies/winners", "LISTA ENTIDADES MOVIE QUANDO PROP WINNER = TRUE"));
+        pairs.add(new SimpleKeyValue("/movies/winners/count", "TOTAL ENTIDADES MOVIE WINNER = TRUE"));
+        pairs.add(new SimpleKeyValue("/movies/winners/year-{year}", "PESQUISA PROP YEAR ENTIDADES MOVIE WINNER = TRUE"));
+        pairs.add(new SimpleKeyValue("/studios", "LISTA ENTIDADES STUDIO"));
+        pairs.add(new SimpleKeyValue("/studios/count", "TOTAL ENTIDADES STUDIO"));
+        pairs.add(new SimpleKeyValue("/producers", "LISTA ENTIDADES PRODUCERS"));
+        pairs.add(new SimpleKeyValue("/producers/count", "TOTAL ENTIDADES PRODUCERS"));
         return pairs;
     }
 
