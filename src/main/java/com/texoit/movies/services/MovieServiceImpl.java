@@ -1,9 +1,6 @@
 package com.texoit.movies.services;
 
-import com.texoit.movies.entities.MinMaxComparison;
-import com.texoit.movies.entities.Movie;
-import com.texoit.movies.entities.Producer;
-import com.texoit.movies.entities.Studio;
+import com.texoit.movies.entities.*;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,10 +31,10 @@ public class MovieServiceImpl implements MovieService {
 
         MinMaxComparison minMaxComparison = new MinMaxComparison();
 
-        List producersObj = this.dbService.getCurrentSession()
-                .createQuery("FROM Producer p " +
+        List<Producer> producersObj = this.dbService.getCurrentSession()
+                .createQuery("SELECT p FROM Producer p " +
                         " GROUP BY p.id" +
-                        " HAVING (SELECT count(p2.id) FROM Producer p2 INNER JOIN p2.movieWinners WHERE p2.id = p.id) > 1")
+                        " HAVING (SELECT count(p2.id) FROM Producer p2 INNER JOIN p2.movieWinners WHERE p2.id = p.id) > 1", Producer.class)
                 .getResultList();
 
         /*
@@ -70,13 +67,13 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public List getDataErrors() {
-        return doSimpleList("FROM DataError");
+    public List<DataError> getDataErrors() {
+        return doSimpleList("SELECT de FROM DataError de", DataError.class);
     }
 
     @Override
-    public List getMovies() {
-        return doSimpleList("FROM Movie");
+    public List<Movie> getMovies() {
+        return doSimpleList("SELECT m FROM Movie m", Movie.class);
     }
 
     @Override
@@ -85,15 +82,15 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public List getMoviesByYear(int year) {
-        Query query = this.dbService.getCurrentSession().createQuery("FROM Movie where year = :year");
+    public List<Movie> getMoviesByYear(int year) {
+        Query<Movie> query = this.dbService.getCurrentSession().createQuery("SELECT m FROM Movie m WHERE m.year = :year", Movie.class);
         query.setParameter("year", year);
         return query.getResultList();
     }
 
     @Override
-    public List getMovieWinners() {
-        return doSimpleList("FROM Movie where isWinner = true");
+    public List<Movie> getMovieWinners() {
+        return doSimpleList("SELECT m FROM Movie m WHERE isWinner = true", Movie.class);
     }
 
     @Override
@@ -101,23 +98,23 @@ public class MovieServiceImpl implements MovieService {
         Session session = this.dbService.getCurrentSession();
         CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
         CriteriaQuery<Long> criteriaQuery = criteriaBuilder.createQuery(Long.class);
-        Root root = criteriaQuery.from(Movie.class);
+        Root<?> root = criteriaQuery.from(Movie.class);
         criteriaQuery.select(criteriaBuilder.count(root));
         criteriaQuery.where(criteriaBuilder.equal(root.get("isWinner"), true));
         return session.createQuery(criteriaQuery).getSingleResult();
     }
 
     @Override
-    public List getMovieWinnersByYear(int year) {
-        Query query = this.dbService.getCurrentSession().createQuery("FROM Movie where isWinner = :isWinner and year = :year");
+    public List<Movie> getMovieWinnersByYear(int year) {
+        Query<Movie> query = this.dbService.getCurrentSession().createQuery("SELECT m FROM Movie m WHERE m.isWinner = :isWinner AND m.year = :year", Movie.class);
         query.setParameter("isWinner", true);
         query.setParameter("year", year);
         return query.getResultList();
     }
 
     @Override
-    public List getStudios() {
-        return doSimpleList("FROM Studio");
+    public List<Studio> getStudios() {
+        return doSimpleList("SELECT s FROM Studio s", Studio.class);
     }
 
     @Override
@@ -126,8 +123,8 @@ public class MovieServiceImpl implements MovieService {
     }
 
     @Override
-    public List getProducers() {
-        return doSimpleList("FROM Producer");
+    public List<Producer> getProducers() {
+        return doSimpleList("SELECT p FROM Producer p", Producer.class);
     }
 
     @Override
@@ -135,15 +132,15 @@ public class MovieServiceImpl implements MovieService {
         return doSimpleCount(Producer.class);
     }
 
-    private List doSimpleList(String sql) {
-        return this.dbService.getCurrentSession().createQuery(sql).getResultList();
+    private <T> List<T> doSimpleList(String sql, Class<T> aClass) {
+        return this.dbService.getCurrentSession().createQuery(sql, aClass).getResultList();
     }
 
-    private long doSimpleCount(Class aClass) {
+    private long doSimpleCount(Class<?> aClass) {
         Session session = this.dbService.getCurrentSession();
         CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
         CriteriaQuery<Long> criteriaQuery = criteriaBuilder.createQuery(Long.class);
-        Root root = criteriaQuery.from(aClass);
+        Root<?> root = criteriaQuery.from(aClass);
         criteriaQuery.select(criteriaBuilder.count(root));
         return session.createQuery(criteriaQuery).getSingleResult();
     }

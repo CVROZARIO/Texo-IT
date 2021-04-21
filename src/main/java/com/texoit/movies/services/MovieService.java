@@ -1,32 +1,32 @@
 package com.texoit.movies.services;
 
-import com.texoit.movies.entities.MinMaxComparison;
+import com.texoit.movies.entities.*;
 
 import java.util.List;
 
 public interface MovieService {
     
-    List getDataErrors();
+    List<DataError> getDataErrors();
 
     MinMaxComparison getAwardsBestAndWorst();
 
-    List getMovies();
+    List<Movie> getMovies();
 
     long getMoviesCount();
 
-    List getMoviesByYear(int year);
+    List<Movie> getMoviesByYear(int year);
 
-    List getMovieWinners();
+    List<Movie> getMovieWinners();
 
     long getMovieWinnersCount();
 
-    List getMovieWinnersByYear(int year);
+    List<Movie> getMovieWinnersByYear(int year);
 
-    List getStudios();
+    List<Studio> getStudios();
 
     long getStudiosCount();
 
-    List getProducers();
+    List<Producer> getProducers();
 
     long getProducersCount();
 }

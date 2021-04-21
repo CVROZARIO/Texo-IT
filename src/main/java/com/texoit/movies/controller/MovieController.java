@@ -1,7 +1,6 @@
 package com.texoit.movies.controller;
 
-import com.texoit.movies.entities.MinMaxComparison;
-import com.texoit.movies.entities.SimpleKeyValue;
+import com.texoit.movies.entities.*;
 import com.texoit.movies.services.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,7 +18,7 @@ public class MovieController {
     private MovieService movieService;
 
     @RequestMapping("/")
-    public List getIndex() {
+    public List<SimpleKeyValue> getIndex() {
         List<SimpleKeyValue> pairs = new ArrayList<>();
         pairs.add(new SimpleKeyValue("/Awards-Best-and-Worst", "REQ: Obter o produtor com maior intervalo entre dois prêmios consecutivos, e o que obteve dois prêmios mais rápido."));
         pairs.add(new SimpleKeyValue("/data-errors", "LISTA DE ERROS DE INTERPRETAÇÃO DE DADOS CSV (DB)"));
@@ -42,12 +41,12 @@ public class MovieController {
     }
 
     @GetMapping("/data-errors")
-    public List getDataErrors() {
+    public List<DataError> getDataErrors() {
         return movieService.getDataErrors();
     }
 
     @GetMapping("/movies")
-    public List getMovies() {
+    public List<Movie> getMovies() {
         return movieService.getMovies();
     }
 
@@ -57,12 +56,12 @@ public class MovieController {
     }
 
     @GetMapping("/movies/year-{year}")
-    public List getMoviesByYear(@PathVariable String year) {
+    public List<Movie> getMoviesByYear(@PathVariable String year) {
         return movieService.getMoviesByYear(Integer.parseInt(year));
     }
 
     @GetMapping("/movies/winners")
-    public List getMovieWinners() {
+    public List<Movie> getMovieWinners() {
         return movieService.getMovieWinners();
     }
 
@@ -72,12 +71,12 @@ public class MovieController {
     }
 
     @GetMapping("/movies/winners/year-{year}")
-    public List getMovieWinnersByYear(@PathVariable String year) {
+    public List<Movie> getMovieWinnersByYear(@PathVariable String year) {
         return movieService.getMovieWinnersByYear(Integer.parseInt(year));
     }
 
     @GetMapping("/studios")
-    public List getStudios() {
+    public List<Studio> getStudios() {
         return movieService.getStudios();
     }
 
@@ -87,7 +86,7 @@ public class MovieController {
     }
 
     @GetMapping("/producers")
-    public List getProducers() {
+    public List<Producer> getProducers() {
         return movieService.getProducers();
     }
 
